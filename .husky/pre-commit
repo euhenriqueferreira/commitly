@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+echo "🔍 Running pre-commit.."
+
+php ./vendor/bin/pint
+php artisan test
+
+if [ $? -ne 0 ]; then
+    echo "❌ Commit blocked."
+    exit 1
+fi
+
+echo "✅ Everything ok."
