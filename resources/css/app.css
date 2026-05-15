@@ -1,11 +1,79 @@
-@import 'tailwindcss';
-
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+@import "tailwindcss";
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    /* =========================================================
+     * LIGHT THEME
+     * ========================================================= */
+
+    --color-background-primary: oklch(98.5% 0.002 248);
+
+    --color-background-secondary: oklch(88.2% 0.003 248);
+
+    --color-border: oklch(86.7% 0.006 248);
+
+    --color-text-primary: oklch(27.8% 0.015 248);
+
+    --color-text-secondary: oklch(50.5% 0.012 248);
+
+    --color-primary: oklch(58% 0.19 252 / 0.44);
+
+    --color-primary-border: oklch(25% 0.01 248 / 0.08);
+
+    --color-success: oklch(55% 0.16 145);
+
+    --color-alert: oklch(67% 0.15 85);
+
+    --color-danger: oklch(58% 0.21 25);
+
+    --color-white: oklch(100% 0 0);
+
+    /* =========================================================
+     * ACHIEVEMENTS
+     * ========================================================= */
+
+    --color-achievement-common: oklch(55% 0.03 255);
+
+    --color-achievement-uncommon: oklch(61% 0.15 240);
+
+    --color-achievement-rare: oklch(68% 0.16 70);
+
+    --color-achievement-epic: oklch(56% 0.24 295);
+
+    --color-achievement-legendary: oklch(66% 0.22 45);
+
+    /* =========================================================
+     * CATEGORIES
+     * ========================================================= */
+
+    --color-category-health: oklch(68% 0.13 240);
+
+    --color-category-productivity: oklch(60% 0.24 305);
+
+    --color-category-growth: oklch(74% 0.16 60);
+
+    --color-category-finance: oklch(64% 0.18 145);
+
+    --color-category-selfcare: oklch(63% 0.21 25);
+
+    --color-category-other: oklch(62% 0.01 248);
+}
+
+/* =============================================================
+ * DARK THEME
+ * ============================================================= */
+
+.dark {
+    --color-background: oklch(17.8% 0.015 248);
+
+    --color-background-secondary: oklch(21.5% 0.015 248);
+
+    --color-border: oklch(32% 0.012 248);
+
+    --color-text-primary: oklch(86% 0.01 248);
+
+    --color-text-secondary: oklch(67% 0.015 248);
+
+    --color-primary: oklch(58% 0.22 255);
+
+    --color-primary-border: oklch(95% 0.01 248 / 0.08);
 }
