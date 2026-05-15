@@ -1,6 +1,16 @@
+@import "@fontsource/inter";
+@import "@fontsource/jetbrains-mono";
+
 @import "tailwindcss";
 
 @theme {
+    /* =========================================================
+     * FONTS
+     * ========================================================= */
+
+    --font-inter: "Inter", sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+    
     /* =========================================================
      * LIGHT THEME
      * ========================================================= */

@@ -18,7 +18,7 @@
 
         @livewireStyles
     </head>
-    <body>
+    <body class="font-inter">
 
         {{ $slot }}
 
