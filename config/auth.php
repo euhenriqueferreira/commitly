@@ -121,9 +121,9 @@ return [
     */
 
     'otp' => [
-        'resend_cooldown' => 60, // seconds
+        'resend_cooldown' => 30, // seconds
         'code_length' => 6,
-        'expires_in' => 10, // minutes
+        'expires_in' => 5, // minutes
         'max_attempts' => 5,
     ],
 

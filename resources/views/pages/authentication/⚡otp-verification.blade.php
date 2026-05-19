@@ -122,7 +122,7 @@ new #[Layout('layouts::auth')] class extends Component
             @endforeach
         </div>
 
-        <x-actions.primary-button>Verificar</x-actions.primary-button>
+        <x-actions.primary-button loading="verify">Verificar</x-actions.primary-button>
     
 
         <div

@@ -60,6 +60,8 @@ new #[Layout('layouts::auth')] class extends Component
 
         $matchedCode->update(['used_at' => now()]);
 
+        session('recovery_authorized', true);
+
         Auth::login($user);
 
         $this->redirectRoute('authentication.email-reset');

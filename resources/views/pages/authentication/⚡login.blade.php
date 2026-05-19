@@ -15,6 +15,8 @@ new #[Layout('layouts::auth')] class extends Component
 
     public function submit(OtpService $otpService)
     {
+sleep(2);
+
         $key = 'login:' . $this->throttleKey();
 
         if (RateLimiter::tooManyAttempts($key, 5)) {
@@ -93,7 +95,7 @@ new #[Layout('layouts::auth')] class extends Component
             </div>
         </div>
 
-        <x-actions.primary-button>Enviar código</x-actions.primary-button>
+        <x-actions.primary-button loading="submit">Enviar código</x-actions.primary-button>
 
         <div class="text-center">
             <span class="text-small text-secondary-text">

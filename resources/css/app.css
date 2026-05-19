@@ -136,3 +136,18 @@
     color: var(--color-primary-text)
 }
 
+@theme {
+    --animate-loading-dot: loading-dot 1.4s infinite;
+
+    @keyframes loading-dot {
+        0%, 80%, 100% {
+            opacity: 0;
+            transform: translateY(0);
+        }
+
+        40% {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+    }
+}

@@ -50,6 +50,8 @@ new #[Layout('layouts::auth')] class extends Component
             email: $user->email,
             type: OtpVerificationType::RECOVERY->value
         );
+        
+        session()->forget('recovery_authorized');
 
         session([
             'otp_user_id' => $user->id,
