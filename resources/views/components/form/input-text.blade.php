@@ -1,6 +1,7 @@
 @props([
     'wireModel',
     'label',
+    'wireType' => 'defer',
     'placeholder' => null,
     'value' => null,
     'isRequired' => false,
@@ -17,7 +18,7 @@
         <input 
             type="text" 
             id="{{ $wireModel }}" 
-            wire:model.defer="{{ $wireModel }}" 
+            @if($wireType === 'live') ? wire:model.live="{{ $wireModel }}" @else wire:model.defer="{{ $wireModel }}" @endif
             placeholder="{{ $placeholder }}" 
             value="{{ $value }}" 
             {{ $attributes->merge(['class' => 'peer w-full border border-border text-small text-primary-text placeholder:text-secondary-text text-left focus:shadow-sm focus:shadow-primary/30 h-11 rounded-md px-4 focus:outline-none']) }} />

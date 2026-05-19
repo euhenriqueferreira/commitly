@@ -43,7 +43,7 @@ new #[Layout('layouts::auth')] class extends Component
         </div>
     </form>
 
-    <a href="" class="text-small text-primary-text">
+    <a href="{{ route('authentication.register') }}" wire:navigate class="text-small text-primary-text">
         Não tem uma conta? 
         <span class="font-semibold underline">
             Criar conta
