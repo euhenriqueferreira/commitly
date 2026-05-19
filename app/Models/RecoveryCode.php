@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['user_id', 'user_at'])]
-#[Hidden(['code_hash'])]
+#[Fillable(['user_id', 'user_at', 'code_hash'])]
+#[Hidden([])]
 class RecoveryCode extends Model
 {
     protected function casts(): array
@@ -18,5 +18,8 @@ class RecoveryCode extends Model
 
     /* --- Relations --- */
 
-    public function user(): BelongsTo {return $this->belongsTo(User::class);}
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

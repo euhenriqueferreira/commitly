@@ -2,10 +2,16 @@
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use App\Models\User;
 
 new #[Layout('layouts::auth')] class extends Component
 {
-    //
+    public User $user;
+
+    public function mount(): void
+    {
+        $this->user = Auth::user();
+    }
 };
 ?>
 
@@ -23,7 +29,7 @@ new #[Layout('layouts::auth')] class extends Component
         </h1>
 
         <span class="text-content text-primary-text text-center">
-            Você entrou como <span class="font-semibold">henriqueferreira0320@gmail.com</span>. 
+            Você entrou como <span class="font-semibold">{{ $user->email }}</span>. 
             <br>
             Bem vindo de volta.
         </span>
@@ -37,12 +43,13 @@ new #[Layout('layouts::auth')] class extends Component
         <span class="text-code">
             <span class="text-purple-500">const</span> user = &#123;
             <br>
-            &nbsp;&nbsp;&nbsp;&nbsp;username: <span class="text-green-700">"@seu-username"</span>
-            &nbsp;&nbsp;&nbsp;&nbsp;streak: <span class="text-green-700">0</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;username: <span class="text-green-700">"{{ $user->username }}"</span>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;streak: <span class="text-green-700">{{ $user->streak }}</span>
             <br>
             &#125;
         </span>
     </div>
 
-    <x-actions.primary-button>Ir para o app</x-actions.primary-button>
+    <x-actions.primary-button href="">Ir para o app</x-actions.primary-button>
 </div>

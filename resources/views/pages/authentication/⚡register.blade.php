@@ -2,12 +2,31 @@
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use App\Services\Authentication\RegisterService;
 
 new #[Layout('layouts::auth')] class extends Component
 {
-    public string $email;
-    public string $name;
-    public string $username = 'myusername';
+    public string $email = '';
+    public string $name = '';
+    public string $username = '';
+
+    public function register(RegisterService $registerService)
+    {
+        $validated = $this->validate([
+            'email' => ['required', 'email', 'unique:users,email'],
+            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:50', 'alpha_dash', 'unique:users,username'],
+        ]);
+
+        $user = $registerService->register($validated);
+
+        session([
+            'otp_user_id' => $user->id,
+            'otp_type' => 'register',
+        ]);
+
+        return redirect()->route('authentication.otp-verification');
+    }
 };
 ?>
 
@@ -29,7 +48,7 @@ new #[Layout('layouts::auth')] class extends Component
         </span>
     </header>
 
-    <form class="w-full space-y-3">
+    <form class="w-full space-y-3" wire:submit.prevent="register">
         <div class="space-y-1">
             <x-form.input-text wireModel="email" label="E-mail" placeholder="seu@email.com" />
             <x-form.input-text wireModel="name" label="Nome" placeholder="Seu nome" />
@@ -50,7 +69,9 @@ new #[Layout('layouts::auth')] class extends Component
             </span>
         </div>
 
-        <x-actions.primary-button>Criar conta e verificar e-mail</x-actions.primary-button>
+        <x-actions.primary-button type="submit">
+            Criar conta e verificar e-mail
+        </x-actions.primary-button>
     </form>
 
     <a href="{{ route('authentication.login') }}" wire:navigate class="text-small text-primary-text">

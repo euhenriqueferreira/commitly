@@ -2,10 +2,68 @@
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use App\Models\User;
+use App\Services\Authentication\OtpService;
 
 new #[Layout('layouts::auth')] class extends Component
 {
+    public string $email;
     public array $digits = ['', '', '', '', '', ''];
+
+    public function mount()
+    {
+        $user = User::find(session('otp_user_id'));
+        $this->email = $user?->email ?? '';
+    }
+
+    public function verify(OtpService $otpService)
+    {
+        $code = $this->code;
+
+        $userId = session('otp_user_id');
+        $type = session('otp_type');
+
+        abort_if(! $userId || ! $type, 403);
+
+        $user = User::findOrFail($userId);
+
+        $isValid = $otpService->validate(
+            user: $user,
+            email: $user->email,
+            code: $code,
+            type: $type
+        );
+
+        if (! $isValid) {
+            $this->addError('otp', 'Código inválido ou expirado.');
+            return;
+        }
+
+        Auth::login($user);
+
+        session()->forget(['otp_user_id', 'otp_type']);
+        session()->regenerate();
+
+        return redirect()->route('authentication.otp-success');
+    }
+
+    public function resend(OtpService $otpService)
+    {
+        $userId = session('otp_user_id');
+        $type = session('otp_type');
+
+        abort_if(! $userId || ! $type, 403);
+
+        $user = User::findOrFail($userId);
+
+        $otpService->generate(
+            user: $user,
+            email: $user->email,
+            type: $type
+        );
+
+        $this->dispatch('auth:otp-resend');
+    }
 
     public function updatedDigits()
     {
@@ -33,13 +91,13 @@ new #[Layout('layouts::auth')] class extends Component
         </h1>
 
         <span class="text-content text-primary-text text-center">
-            Enviamos um código de 6 dígitos para <span class="font-semibold">henriqueferreira0320@gmail.com</span>. 
+            Enviamos um código de 6 dígitos para <span class="font-semibold">{{ $email }}</span>. 
             <br>
             Ele expira em 10 minutos.
         </span>
     </header>
 
-    <form class="w-full space-y-3">
+    <form class="w-full space-y-3" wire:submit.prevent="verify">
         <div
             x-data="{
                 focusNext(index) {if (this.$refs['input' + (index + 1)]) this.$refs['input' + (index + 1)].focus();},
@@ -98,6 +156,7 @@ new #[Layout('layouts::auth')] class extends Component
                     return `${m}:${String(s).padStart(2, '0')}`;
                 }
             }"
+            x-on:auth:otp-resend.window="resetTimer()"
             class="flex flex-col gap-3 items-center"
         >
             <span class="text-small text-secondary-text">
@@ -107,12 +166,11 @@ new #[Layout('layouts::auth')] class extends Component
                 </span>
             </span>
 
-            <x-actions.secondary-button size="fit" x-bind:disabled="seconds > 0"  x-bind:class="seconds > 0 ? 'opacity-65 cursor-not-allowed' : 'opacity-100 hover:brightness-95 cursor-pointer'" @click="resetTimer()">
+            <x-actions.secondary-button size="fit" x-bind:disabled="seconds > 0"  x-bind:class="seconds > 0 ? 'opacity-65 cursor-not-allowed' : 'opacity-100 hover:brightness-95 cursor-pointer'" wire:click="resend">
                 Reenviar agora
             </x-actions.secondary-button>
         </div>
     </form>
-
 
     <a href="{{ route('authentication.login') }}" wire:navigate class="text-small text-primary-text underline">
         Voltar para o login
