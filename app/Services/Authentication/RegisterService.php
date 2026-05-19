@@ -2,6 +2,7 @@
 
 namespace App\Services\Authentication;
 
+use App\Enum\Authentication\Otp\OtpVerificationType;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -23,7 +24,7 @@ class RegisterService
             $this->otpService->generate(
                 user: $user,
                 email: $user->email,
-                type: 'register'
+                type: OtpVerificationType::REGISTER->value
             );
 
             return $user;

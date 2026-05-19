@@ -1,6 +1,9 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use Resend\Laravel\ResendServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    Resend\Laravel\ResendServiceProvider::class,
+    AppServiceProvider::class,
+    ResendServiceProvider::class,
 ];

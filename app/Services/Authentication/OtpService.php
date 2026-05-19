@@ -2,7 +2,6 @@
 
 namespace App\Services\Authentication;
 
-use App\Jobs\Authentication\SendOtpEmailJob;
 use App\Models\OtpCode;
 use App\Models\User;
 use App\Services\EmailService;

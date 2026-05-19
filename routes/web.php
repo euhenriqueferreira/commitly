@@ -1,23 +1,6 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
-
-Route::get('/mail/otp', function () {
-$path = public_path('assets/images/logotipo-commitly-3x.png');
-
-$data = file_get_contents($path);
-
-dd([
-    'exists' => file_exists($path),
-    'size' => strlen($data),
-    'base64_preview' => substr(base64_encode($data), 0, 100),
-]);
-    return view('emails.authentication.otp-verification', [
-        'code' => '123456',
-        'expiresIn' => config('auth.otp.expires_in'),
-    ]);
-});
 
 Route::prefix('/auth')->group(function () {
     Route::livewire('/cadastro', 'pages::authentication.register')

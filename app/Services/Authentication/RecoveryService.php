@@ -50,7 +50,8 @@ class RecoveryService
     private function generateFormattedCode(): string
     {
         $raw = Str::upper(Str::random(8));
-        return substr($raw, 0, 4) . '-' . substr($raw, 4, 4);
+
+        return substr($raw, 0, 4).'-'.substr($raw, 4, 4);
     }
 
     private function normalize(string $code): string

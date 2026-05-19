@@ -2,9 +2,69 @@
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use App\Models\User;
+use App\Services\Authentication\OtpService;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
+use App\Enum\Authentication\Otp\OtpVerificationType;
 
 new #[Layout('layouts::auth')] class extends Component
-{};
+{
+    public string $email = '';
+
+    public function submit(OtpService $otpService)
+    {
+        $this->validate([
+            'email' => ['required', 'email', 'max:255'],
+        ]);
+
+
+        $key = 'login:' . $this->throttleKey();
+
+
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = RateLimiter::availableIn($key);
+
+            throw ValidationException::withMessages([
+                'email' => "Muitas tentativas. Tente novamente em {$seconds} segundos.",
+            ]);
+        }
+
+        $user = User::query()
+            ->where('email', $this->email)
+            ->first();
+
+        if (!$user) {
+            RateLimiter::hit($key, 300);
+
+            throw ValidationException::withMessages([
+                'email' => 'Nenhuma conta encontrada com este e-mail.',
+            ]);
+        }
+
+        RateLimiter::clear($key);
+
+        $otpService->generate(
+                user: $user,
+                email: $user->email,
+                type: OtpVerificationType::LOGIN->value
+            );
+
+        session([
+            'otp_user_id' => $user->id,
+            'otp_type' => OtpVerificationType::LOGIN->value,
+            'auth_flow' => 'login',
+        ]);
+
+        return redirect()->route('authentication.otp-verification');
+    }
+
+    protected function throttleKey(): string
+    {
+        return Str::lower($this->email) . '|' . request()->ip();
+    }
+};
 ?>
 
 <div class="contents">
@@ -25,12 +85,12 @@ new #[Layout('layouts::auth')] class extends Component
         </span>
     </header>
 
-    <form class="w-full space-y-3">
+    <form class="w-full space-y-3" wire:submit="submit">
         <div class="space-y-1">
-            <x-form.input-text wireModel="email" label="E-mail" placeholder="seu@email.com" />
+            <x-form.input-text wireModel="email" label="E-mail" placeholder="seu@email.com" autocomplete="email" />
             
             <div class="w-full text-right">
-                <a href="" class="text-small text-secondary-text text-right">Perdeu acesso ao seu e-mail?</a>
+                <a href="{{ route('authentication.recovery') }}" wire:navigate class="text-small text-secondary-text text-right">Perdeu acesso ao seu e-mail?</a>
             </div>
         </div>
 

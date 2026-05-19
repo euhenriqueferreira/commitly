@@ -7,10 +7,16 @@ use App\Models\User;
 new #[Layout('layouts::auth')] class extends Component
 {
     public User $user;
+    public string $buttonRoute;
 
     public function mount(): void
     {
         $this->user = Auth::user();
+
+        $flow = session('auth_flow');
+        session()->forget(['auth_flow']);
+
+        $this->buttonRoute = $flow === 'register' ? route('authentication.recovery-codes') : '';
     }
 };
 ?>
@@ -51,5 +57,5 @@ new #[Layout('layouts::auth')] class extends Component
         </span>
     </div>
 
-    <x-actions.primary-button href="">Ir para o app</x-actions.primary-button>
+    <x-actions.primary-button href="{{ $buttonRoute }}">Ir para o app</x-actions.primary-button>
 </div>
