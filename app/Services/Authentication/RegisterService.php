@@ -19,7 +19,9 @@ class RegisterService
 
             $user = $this->createUser($data);
 
-            $this->recoveryService->generateForUser($user);
+            $recoveryCodes = $this->recoveryService->generateForUser($user);
+
+            session()->put('recovery_codes', $recoveryCodes);
 
             $this->otpService->generate(
                 user: $user,

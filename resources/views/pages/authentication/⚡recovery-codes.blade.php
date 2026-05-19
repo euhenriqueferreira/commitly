@@ -5,11 +5,18 @@ use Livewire\Attributes\Layout;
 
 new #[Layout('layouts::auth')] class extends Component
 {
-    public array $recoveryCodes;
+    public array $recoveryCodes = [];
 
     public function mount()
     {
-        $this->recoveryCodes = ['A3F2-9KL1', 'BX7M-2P4Q', 'C9N8-6RT5', 'D1W3-7YH0', 'E5J4-3MZ8', 'F8U6-1SV2', 'G0Q9-4XB7', 'H2L7-8DK3'];
+        $this->recoveryCodes = session('recovery_codes', []);
+        abort_if(empty($this->recoveryCodes), 403);
+    }
+
+    public function continue(): void
+    {
+        session()->forget('recovery_codes');
+        // $this->redirectRoute('dashboard');
     }
 };
 ?>
@@ -44,7 +51,15 @@ new #[Layout('layouts::auth')] class extends Component
     </div>
 
     <div class="w-full space-y-3">    
-        <x-actions.outline-button>Copiar todos</x-actions.outline-button>
-        <x-actions.primary-button>Já salvei, continuar</x-actions.primary-button>
+        <x-actions.outline-button
+            x-on:click="navigator.clipboard.writeText(@js(implode('\n', $recoveryCodes)))"
+        >
+            Copiar todos
+        </x-actions.outline-button>
+        <x-actions.primary-button
+            wire:click="continue"
+        >
+            Já salvei, continuar
+        </x-actions.primary-button>
     </div>
 </div>
