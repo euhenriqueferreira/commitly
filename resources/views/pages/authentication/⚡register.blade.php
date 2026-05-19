@@ -50,7 +50,7 @@ new #[Layout('layouts::auth')] class extends Component
             </span>
         </div>
 
-        <x-actions.button>Criar conta e verificar e-mail</x-actions.button>
+        <x-actions.primary-button>Criar conta e verificar e-mail</x-actions.primary-button>
     </form>
 
     <a href="{{ route('authentication.login') }}" wire:navigate class="text-small text-primary-text">

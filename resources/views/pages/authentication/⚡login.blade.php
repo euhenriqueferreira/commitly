@@ -34,7 +34,7 @@ new #[Layout('layouts::auth')] class extends Component
             </div>
         </div>
 
-        <x-actions.button>Enviar código</x-actions.button>
+        <x-actions.primary-button>Enviar código</x-actions.primary-button>
 
         <div class="text-center">
             <span class="text-small text-secondary-text">
