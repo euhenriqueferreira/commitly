@@ -17,8 +17,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'otp-pending' => EnsureOtpPending::class,
             'recovery-codes-available' => EnsureRecoveryCodesAvailable::class,
-            'recovery-authorized' =>EnsureRecoveryAuthorized::class,
+            'recovery-authorized' => EnsureRecoveryAuthorized::class,
         ]);
+
+        $middleware->redirectGuestsTo(fn () => route('authentication.login'));
+        $middleware->redirectUsersTo(fn () => route('authentication.otp-success'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EnsureRecoveryCodesAvailable
 {
-    public function handle(Request $request, Closure $next): Response {
+    public function handle(Request $request, Closure $next): Response
+    {
         if (! session()->has('recovery_codes')) {
             return redirect()->route('authentication.otp-success');
         }

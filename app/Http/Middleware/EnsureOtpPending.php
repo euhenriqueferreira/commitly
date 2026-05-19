@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EnsureOtpPending
 {
-    public function handle(Request $request, Closure $next): Response {
+    public function handle(Request $request, Closure $next): Response
+    {
         if (! session()->has('otp_user_id')) {
             return redirect()->route('authentication.login');
         }

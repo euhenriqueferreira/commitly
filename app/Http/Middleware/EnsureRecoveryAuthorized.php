@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EnsureRecoveryAuthorized
 {
-    public function handle(Request $request, Closure $next): Response {
+    public function handle(Request $request, Closure $next): Response
+    {
         if (! session('recovery_authorized')) {
             return redirect()->route('authentication.recovery');
         }
