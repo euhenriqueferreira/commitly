@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72">
+  <style>
+    @keyframes pop {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes diag-blue {
+      0%,100% { fill: var(--dim); filter: none; }
+      20%     { fill: #80b0f5;   filter: drop-shadow(0 0 3px rgba(77,142,240,.7)); }
+      42%     { fill: #1F6FEB;   filter: drop-shadow(0 0 1px rgba(31,111,235,.3)); }
+      65%     { fill: var(--dim); filter: none; }
+    }
+
+    @keyframes cur-blink {
+      0%,49%   { fill: #1F6FEB; filter: drop-shadow(0 0 3px rgba(31,111,235,.6)); }
+      50%,100% { fill: #0d1525; filter: none; }
+    }
+
+    @keyframes cur-outline {
+      0%,49%   { opacity: 0; }
+      50%,100% { opacity: 1; }
+    }
+
+    /* ── static dots ── */
+    .s { animation: pop .28s cubic-bezier(.34,1.56,.64,1) both; }
+
+    /* ── diagonal trail dots ── */
+    .t0 {
+      --dim: #0d3a8a;
+      animation:
+        pop      .28s cubic-bezier(.34,1.56,.64,1) .04s both,
+        diag-blue 2.4s ease-in-out .8s infinite;
+    }
+    .t1 {
+      --dim: #1150b8;
+      animation:
+        pop      .28s cubic-bezier(.34,1.56,.64,1) .08s both,
+        diag-blue 2.4s ease-in-out 1.1s infinite;
+    }
+    .t2 {
+      --dim: #1F6FEB;
+      animation:
+        pop      .28s cubic-bezier(.34,1.56,.64,1) .12s both,
+        diag-blue 2.4s ease-in-out 1.4s infinite;
+    }
+
+    /* ── cursor dot ── */
+    .cur {
+      animation:
+        pop       .28s cubic-bezier(.34,1.56,.64,1) .16s both,
+        cur-blink  1.1s step-end 1.8s infinite;
+    }
+
+    /* ── cursor outline (visible when dot is off) ── */
+    .cur-ring {
+      fill: none;
+      stroke: rgba(31,111,235,0.35);
+      stroke-width: 1.5;
+      animation:
+        pop        .28s cubic-bezier(.34,1.56,.64,1) .16s both,
+        cur-outline 1.1s step-end 1.8s infinite;
+    }
+  </style>
+
+  <!--
+    4×4 grid centred in 72×72
+    cell: 14px  gap: 3.5px
+    total grid: 4*14 + 3*3.5 = 66.5px
+    offset x = (72 - 66.5) / 2 = 2.75  → 2.75
+    offset y = same                      → 2.75
+
+    col x values: 2.75 | 20.25 | 37.75 | 55.25
+    row y values: 2.75 | 20.25 | 37.75 | 55.25
+  -->
+
+  <!-- ROW 0 -->
+  <!-- (0,0) diagonal trail 0 -->
+  <rect class="t0" x="2.75"  y="2.75"  width="14" height="14" rx="3" fill="#0d3a8a"/>
+  <!-- (0,1) static -->
+  <rect class="s"  x="20.25" y="2.75"  width="14" height="14" rx="3" fill="#4d8ef0" style="animation-delay:.04s"/>
+  <!-- (0,2) static -->
+  <rect class="s"  x="37.75" y="2.75"  width="14" height="14" rx="3" fill="#1F6FEB" style="animation-delay:.08s"/>
+  <!-- (0,3) static -->
+  <rect class="s"  x="55.25" y="2.75"  width="14" height="14" rx="3" fill="#1150b8" style="animation-delay:.12s"/>
+
+  <!-- ROW 1 -->
+  <!-- (1,0) static -->
+  <rect class="s"  x="2.75"  y="20.25" width="14" height="14" rx="3" fill="#1F6FEB" style="animation-delay:.16s"/>
+  <!-- (1,1) diagonal trail 1 -->
+  <rect class="t1" x="20.25" y="20.25" width="14" height="14" rx="3" fill="#1150b8"/>
+  <!-- (1,2) static -->
+  <rect class="s"  x="37.75" y="20.25" width="14" height="14" rx="3" fill="#4d8ef0" style="animation-delay:.20s"/>
+  <!-- (1,3) static -->
+  <rect class="s"  x="55.25" y="20.25" width="14" height="14" rx="3" fill="#0d3a8a" style="animation-delay:.24s"/>
+
+  <!-- ROW 2 -->
+  <!-- (2,0) static -->
+  <rect class="s"  x="2.75"  y="37.75" width="14" height="14" rx="3" fill="#1150b8" style="animation-delay:.28s"/>
+  <!-- (2,1) static -->
+  <rect class="s"  x="20.25" y="37.75" width="14" height="14" rx="3" fill="#1F6FEB" style="animation-delay:.32s"/>
+  <!-- (2,2) diagonal trail 2 -->
+  <rect class="t2" x="37.75" y="37.75" width="14" height="14" rx="3" fill="#1F6FEB"/>
+  <!-- (2,3) static -->
+  <rect class="s"  x="55.25" y="37.75" width="14" height="14" rx="3" fill="#0d3a8a" style="animation-delay:.36s"/>
+
+  <!-- ROW 3 -->
+  <!-- (3,0) static -->
+  <rect class="s"  x="2.75"  y="55.25" width="14" height="14" rx="3" fill="#1F6FEB" style="animation-delay:.40s"/>
+  <!-- (3,1) static -->
+  <rect class="s"  x="20.25" y="55.25" width="14" height="14" rx="3" fill="#1150b8" style="animation-delay:.44s"/>
+  <!-- (3,2) static -->
+  <rect class="s"  x="37.75" y="55.25" width="14" height="14" rx="3" fill="#0d3a8a" style="animation-delay:.48s"/>
+  <!-- (3,3) cursor outline (visible when dot off) -->
+  <rect class="cur-ring" x="2.75" y="2.75" width="0" height="0" rx="3"/><!-- placeholder to keep paint order -->
+  <rect class="cur-ring" x="55.25" y="55.25" width="14" height="14" rx="3"/>
+  <!-- (3,3) cursor dot -->
+  <rect class="cur" x="55.25" y="55.25" width="14" height="14" rx="3" fill="#0d1525"/>
+</svg>

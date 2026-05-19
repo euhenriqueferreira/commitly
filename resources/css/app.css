@@ -21,11 +21,11 @@
 
     --color-border: oklch(86.7% 0.006 248);
 
-    --color-text-primary: oklch(27.8% 0.015 248);
+    --color-primary-text: oklch(27.8% 0.015 248);
 
-    --color-text-secondary: oklch(50.5% 0.012 248);
+    --color-secondary-text: oklch(50.5% 0.012 248);
 
-    --color-primary: oklch(58% 0.19 252 / 0.44);
+    --color-primary: oklch(58% 0.19 252 / 0.70);
 
     --color-primary-border: oklch(25% 0.01 248 / 0.08);
 
@@ -73,17 +73,50 @@
  * ============================================================= */
 
 .dark {
-    --color-background: oklch(17.8% 0.015 248);
+    --color-background-primary: oklch(17.8% 0.015 248);
 
     --color-background-secondary: oklch(21.5% 0.015 248);
 
     --color-border: oklch(32% 0.012 248);
 
-    --color-text-primary: oklch(86% 0.01 248);
+    --color-primary-text: oklch(86% 0.01 248);
 
-    --color-text-secondary: oklch(67% 0.015 248);
+    --color-secondary-text: oklch(67% 0.015 248);
 
-    --color-primary: oklch(58% 0.22 255);
+    --color-primary: oklch(56.9% 0.20 260);
 
     --color-primary-border: oklch(95% 0.01 248 / 0.08);
 }
+
+/* =============================================================
+ * FONT UTILITIES
+ * ============================================================= */
+
+@utility text-heading-1 {
+    font-family: var(--font-inter);
+    font-size: 20px;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+@utility text-heading-2 {
+    font-family: var(--font-inter);
+    font-size: 18px;
+    line-height: 1.2;
+    font-weight: 600;
+}
+
+@utility text-content {
+    font-family: var(--font-inter);
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+@utility text-small {
+    font-family: var(--font-inter);
+    font-size: 14px;
+    line-height: 1.6;
+    font-weight: 400;
+}
+
