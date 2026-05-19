@@ -114,4 +114,21 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | OTP
+    |--------------------------------------------------------------------------
+    */
+
+    'otp' => [
+        'resend_cooldown' => 30, // seconds
+        'code_length' => 6,
+        'expires_in' => 5, // minutes
+        'max_attempts' => 5,
+    ],
+
+    'recovery' => [
+        'code_length' => 8,
+        'code_quantity' => 8,
+    ],
 ];
