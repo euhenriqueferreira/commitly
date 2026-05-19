@@ -16,14 +16,14 @@ class RecoveryService
         $quantity = config('auth.recovery.code_quantity', 8);
 
         for ($i = 0; $i < $quantity; $i++) {
-            $plain = $this->generateFormattedCode();
+            $code = $this->generateFormattedCode();
 
             RecoveryCode::create([
                 'user_id' => $user->id,
-                'code_hash' => Hash::make($this->normalize($plain)),
+                'code_hash' => Hash::make($code),
             ]);
 
-            $codes[] = $plain;
+            $codes[] = $code;
         }
 
         return $codes;
@@ -52,10 +52,5 @@ class RecoveryService
         $raw = Str::upper(Str::random(8));
 
         return substr($raw, 0, 4).'-'.substr($raw, 4, 4);
-    }
-
-    private function normalize(string $code): string
-    {
-        return str_replace('-', '', $code);
     }
 }

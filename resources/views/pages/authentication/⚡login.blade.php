@@ -15,13 +15,7 @@ new #[Layout('layouts::auth')] class extends Component
 
     public function submit(OtpService $otpService)
     {
-        $this->validate([
-            'email' => ['required', 'email', 'max:255'],
-        ]);
-
-
         $key = 'login:' . $this->throttleKey();
-
 
         if (RateLimiter::tooManyAttempts($key, 5)) {
             $seconds = RateLimiter::availableIn($key);
@@ -30,6 +24,11 @@ new #[Layout('layouts::auth')] class extends Component
                 'email' => "Muitas tentativas. Tente novamente em {$seconds} segundos.",
             ]);
         }
+        
+        $this->validate([
+            'email' => ['required', 'email', 'max:255'],
+        ]);
+
 
         $user = User::query()
             ->where('email', $this->email)
@@ -57,7 +56,7 @@ new #[Layout('layouts::auth')] class extends Component
             'auth_flow' => 'login',
         ]);
 
-        return redirect()->route('authentication.otp-verification');
+        $this->redirectRoute('authentication.otp-verification');
     }
 
     protected function throttleKey(): string

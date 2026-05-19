@@ -27,7 +27,7 @@ new #[Layout('layouts::auth')] class extends Component
             'auth_flow' => 'register',
         ]);
 
-        return redirect()->route('authentication.otp-verification');
+        $this->redirectRoute('authentication.otp-verification');
     }
 };
 ?>

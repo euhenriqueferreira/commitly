@@ -44,7 +44,7 @@ new #[Layout('layouts::auth')] class extends Component
         session()->forget(['otp_user_id', 'otp_type']);
         session()->regenerate();
 
-        return redirect()->route('authentication.otp-success');
+        $this->redirectRoute('authentication.otp-success');
     }
 
     public function resend(OtpService $otpService)
