@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('username')->unique();
             $table->string('email')->unique();
+            $table->string('timezone')->default('America/Sao_Paulo');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->integer('streak')->default(0);
