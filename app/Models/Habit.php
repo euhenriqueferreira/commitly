@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[Hidden([])]
 class Habit extends Model
 {
-     use SoftDeletes;
+    use SoftDeletes;
 
     protected function casts(): array
     {

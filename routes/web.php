@@ -4,20 +4,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/auth')->group(function () {
     Route::middleware('guest')->group(function () {
-        Route::livewire('/cadastro', 'pages::authentication.register')
+        Route::livewire('/register', 'pages::authentication.register')
             ->name('authentication.register');
         Route::livewire('/login', 'pages::authentication.login')
             ->name('authentication.login');
-        Route::livewire('/recuperacao', 'pages::authentication.recovery')
+        Route::livewire('/recovery', 'pages::authentication.recovery')
             ->name('authentication.recovery');
     });
 
-    Route::livewire('/verificacao', 'pages::authentication.otp-verification')
+    Route::livewire('/verify', 'pages::authentication.otp-verification')
         ->middleware('otp-pending')
         ->name('authentication.otp-verification');
 
     Route::middleware('auth')->group(function () {
-        Route::livewire('/sucesso', 'pages::authentication.otp-success')
+        Route::livewire('/success', 'pages::authentication.otp-success')
             ->name('authentication.otp-success');
 
         Route::livewire('/codigos-de-recuperacao', 'pages::authentication.recovery-codes')
@@ -29,4 +29,8 @@ Route::prefix('/auth')->group(function () {
             ->name('authentication.email-reset');
     });
 
+});
+
+Route::prefix('/habits')->group(function () {
+    Route::livewire('/create', 'pages::habits.create')->name('habits.create');
 });

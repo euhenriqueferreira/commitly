@@ -3,6 +3,7 @@
 
 @import "tailwindcss";
 
+
 @theme {
     /* =========================================================
      * FONTS
@@ -86,6 +87,22 @@
     --color-primary: oklch(56.9% 0.20 260);
 
     --color-primary-border: oklch(95% 0.01 248 / 0.08);
+
+    /* =========================================================
+     * CATEGORIES
+     * ========================================================= */
+
+    --color-category-health: oklch(68% 0.13 240);
+
+    --color-category-productivity: oklch(60% 0.24 305);
+
+    --color-category-growth: oklch(74% 0.16 60);
+
+    --color-category-finance: oklch(64% 0.18 145);
+
+    --color-category-selfcare: oklch(63% 0.21 25);
+
+    --color-category-other: oklch(62% 0.01 248);
 }
 
 /* =============================================================

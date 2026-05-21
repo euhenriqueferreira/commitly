@@ -15,13 +15,26 @@ enum WeekdayEnum: int
     public function label(): string
     {
         return match ($this) {
-            self::SUNDAY => 'Sunday',
-            self::MONDAY => 'Monday',
-            self::TUESDAY => 'Tuesday',
-            self::WEDNESDAY => 'Wednesday',
-            self::THURSDAY => 'Thursday',
-            self::FRIDAY => 'Friday',
-            self::SATURDAY => 'Saturday',
+            self::SUNDAY => 'Domingo',
+            self::MONDAY => 'Segunda-feira',
+            self::TUESDAY => 'Terça-feira',
+            self::WEDNESDAY => 'Quarta-feira',
+            self::THURSDAY => 'Quinta-feira',
+            self::FRIDAY => 'Sexta-feira',
+            self::SATURDAY => 'Sábado',
+        };
+    }
+
+    public function shortLabel(): string
+    {
+        return match ($this) {
+            self::SUNDAY => 'Dom',
+            self::MONDAY => 'Seg',
+            self::TUESDAY => 'Ter',
+            self::WEDNESDAY => 'Qua',
+            self::THURSDAY => 'Qui',
+            self::FRIDAY => 'Sex',
+            self::SATURDAY => 'Sáb',
         };
     }
 }
