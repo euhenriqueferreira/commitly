@@ -2,7 +2,7 @@
 
 namespace App\Enum\Authentication\Otp;
 
-enum OtpVerificationType: string
+enum OtpVerificationTypeEnum: string
 {
     case LOGIN = 'login';
     case REGISTER = 'register';

@@ -5,7 +5,7 @@ use Livewire\Attributes\Layout;
 use App\Services\Authentication\OtpService;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
-use App\Enum\Authentication\Otp\OtpVerificationType;
+use App\Enum\Authentication\Otp\OtpVerificationTypeEnum;
 
 new #[Layout('layouts::auth')] class extends Component
 {
@@ -48,14 +48,14 @@ new #[Layout('layouts::auth')] class extends Component
         $otpService->generate(
             user: $user,
             email: $user->email,
-            type: OtpVerificationType::RECOVERY->value
+            type: OtpVerificationTypeEnum::RECOVERY->value
         );
         
         session()->forget('recovery_authorized');
 
         session([
             'otp_user_id' => $user->id,
-            'otp_type' => OtpVerificationType::RECOVERY->value,
+            'otp_type' => OtpVerificationTypeEnum::RECOVERY->value,
             'auth_flow' => 'recovery',
         ]);
 

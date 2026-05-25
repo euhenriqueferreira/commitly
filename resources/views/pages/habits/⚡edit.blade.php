@@ -1,38 +1,42 @@
 <?php
 
 use Livewire\Component;
-use App\Services\Habits\CreateHabitService;
+use App\Models\Habit;
 use App\Models\Category;
 use App\Enum\Habits\WeekdayEnum;
+use Illuminate\Validation\Rule;
+use App\Services\Habits\UpdateHabitService;
 
 new class extends Component
 {
+    public Habit $habit;
+
     public string $name = '';
+
     public ?int $category = null;
+
     public array $weekdays = [];
+
     public ?string $reminderTime = null;
 
-    public function save(CreateHabitService $service): void {
-        $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'category' => ['required', 'exists:categories,id'],
-            'weekdays' => ['required', 'array', 'min:1'],
-            'weekdays.*' => ['integer', Rule::in(WeekdayEnum::values())],
-            'reminderTime' => ['nullable', 'date_format:H:i'],
-        ]);
-        
+    public function mount(Habit $habit): void
+    {
+        $habit->load(['currentVersion.category', 'currentVersion.weekdays']);
 
-        $service->handle([
-            'name' => $validated['name'],
-            'category_id' => $validated['category'],
-            'weekdays' => $validated['weekdays'],
-            'reminder_time' => $validated['reminderTime'],
-        ]);
+        $this->habit = $habit;
 
-        $this->redirectRoute('home');
+        $this->name = $habit->name;
+        $this->category = $habit->currentVersion->category_id;
+        $this->weekdays = $habit->currentVersion
+                            ->weekdays
+                            ->pluck('weekday')
+                            ->map(fn ($weekday) => $weekday->value)
+                            ->toArray();
+
+        $this->reminderTime = $habit->currentVersion->reminder_time;
     }
 
-    public function toggleWeekday(int $weekday): void
+    public function toggleWeekday(int $weekday): void 
     {
         if (in_array($weekday, $this->weekdays)) {
             $this->weekdays = array_values(array_filter($this->weekdays, fn ($day) => $day !== $weekday));
@@ -43,14 +47,39 @@ new class extends Component
         sort($this->weekdays);
     }
 
-    public function selectCategory(int $category): void
+    public function selectCategory(int $categoryId): void 
     {
-        $this->category = $category;
+        $this->category = $categoryId;
+    }
+
+    public function save(UpdateHabitService $service): void 
+    {
+        $validated = $this->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'category' => ['required', 'exists:categories,id'],
+            'weekdays' => ['required', 'array', 'min:1'],
+            'weekdays.*' => ['integer', Rule::in(WeekdayEnum::values())],
+            'reminderTime' => ['nullable', 'date_format:H:i'],
+        ]);
+
+        $service->handle(
+            habit: $this->habit,
+            data: [
+                'name' => $validated['name'],
+                'category_id' => $validated['category'],
+                'weekdays' => $validated['weekdays'],
+                'reminder_time' => $validated['reminderTime'],
+            ]
+        );
+
+        $this->redirectRoute('habits.show', $this->habit);
     }
 
     public function categories()
     {
-        return Category::query()->get();
+        return Category::query()
+            ->orderBy('name')
+            ->get();
     }
 };
 ?>

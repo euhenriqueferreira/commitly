@@ -37,4 +37,22 @@ enum WeekdayEnum: int
             self::SATURDAY => 'Sáb',
         };
     }
+
+    public function digit(): string
+    {
+        return match ($this) {
+            self::SUNDAY => 'D',
+            self::MONDAY => 'S',
+            self::TUESDAY => 'T',
+            self::WEDNESDAY => 'Q',
+            self::THURSDAY => 'Q',
+            self::FRIDAY => 'S',
+            self::SATURDAY => 'S',
+        };
+    }
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
 }

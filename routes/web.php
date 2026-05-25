@@ -31,6 +31,10 @@ Route::prefix('/auth')->group(function () {
 
 });
 
-Route::prefix('/habits')->group(function () {
-    Route::livewire('/create', 'pages::habits.create')->name('habits.create');
+Route::middleware('auth')->group(function () {
+    Route::prefix('/habits')->group(function () {
+        Route::livewire('/create', 'pages::habits.create')->name('habits.create');
+        Route::livewire('/{habit}/show', 'pages::habits.show')->name('habits.show');
+        Route::livewire('/{habit}/edit', 'pages::habits.edit')->name('habits.edit');
+    });
 });

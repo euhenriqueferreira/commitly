@@ -1,6 +1,6 @@
 <?php
 
-use App\Enum\Authentication\Otp\OtpVerificationType;
+use App\Enum\Authentication\Otp\OtpVerificationTypeEnum;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->string('email');
             $table->string('code_hash');
-            $table->enum('type', OtpVerificationType::values());
+            $table->enum('type', OtpVerificationTypeEnum::values());
             $table->timestamp('expires_at');
             $table->integer('attempts')->default(0);
             $table->integer('max_attempts');

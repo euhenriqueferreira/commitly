@@ -3,7 +3,7 @@
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use App\Services\Authentication\RegisterService;
-use App\Enum\Authentication\Otp\OtpVerificationType;
+use App\Enum\Authentication\Otp\OtpVerificationTypeEnum;
 
 new #[Layout('layouts::auth')] class extends Component
 {
@@ -23,7 +23,7 @@ new #[Layout('layouts::auth')] class extends Component
 
         session([
             'otp_user_id' => $user->id,
-            'otp_type' => OtpVerificationType::LOGIN->value,
+            'otp_type' => OtpVerificationTypeEnum::LOGIN->value,
             'auth_flow' => 'register',
         ]);
 
