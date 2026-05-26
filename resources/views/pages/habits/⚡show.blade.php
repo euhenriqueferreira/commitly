@@ -16,6 +16,7 @@ new class extends Component
     
     public array $weekdays = [];
     public string $reminderTime = '';
+    public string $endsAt = '';
 
     public function mount(Habit $habit): void
     {
@@ -29,7 +30,8 @@ new class extends Component
         $this->monthlyCompletions = $this->monthlyCompletions();
         $this->completionRate = $this->completionRate();
         $this->weekdays = $habit->currentVersion->weekdays->map(fn($day) => $day->weekday->shortLabel())->toArray();
-        $this->reminderTime = $habit->currentVersion->reminder_time ? Carbon::parse($habit->currentVersion->reminder_time)->format('H:i') : '--:--';
+        $this->reminderTime = $habit->currentVersion->reminder_time ? Carbon::parse($habit->currentVersion->reminder_time)->format('H:i') : 'Sem lembrete';
+        $this->endsAt = $habit->currentVersion->ends_at ? Carbon::parse($habit->currentVersion->ends_at)->format('d/m/Y') : 'Sem limite';
     }
 
     public function markAsDone(): void
@@ -183,11 +185,8 @@ new class extends Component
 ?>
 
 <div class="contents">
-    <header>
-        <h2 class="text-heading-1 text-primary-text text-left">
-            Hábito
-        </h2>
-    </header>
+    <x-structure.page-header title="Visualizar hábito" />
+
 
     <div class="w-full px-2 py-1 rounded-lg text-center" style="background-color: {{ HabitTypeEnum::ATOMIC->color() }}">
         <span class="text-small text-secondary-text">
@@ -235,12 +234,9 @@ new class extends Component
             <p class="flex-1 text-small text-secondary-text text-left">
                 Dias da semana
             </p>
-            <span class="text-small text-primary-text truncate flex-1">
+            <span class="text-small text-primary-text truncate">
                 {{ count($weekdays) === 7 ? 'Todos' : implode(', ', $weekdays) }}
             </span>
-            <x-actions.secondary-button size="fit">
-                Editar
-            </x-actions.secondary-button>
         </div>
 
         <div class="border-t border-border"></div>
@@ -252,18 +248,28 @@ new class extends Component
             <span class="text-small text-primary-text">
                 {{ $reminderTime }}
             </span>
-            <x-actions.secondary-button size="fit">
-                Editar
-            </x-actions.secondary-button>
         </div>
+
+        <div class="border-t border-border"></div>
+
+        <div class="flex items-center gap-3">
+            <p class="flex-1 text-small text-secondary-text text-left">
+                Data limite
+            </p>
+            <span class="text-small text-primary-text">
+                {{ $endsAt }}
+            </span>
+        </div>
+
+        <x-actions.primary-button class="mt-1" href="{{ route('habits.edit', $habit) }}">
+            Editar
+        </x-actions.primary-button>
     </div>
 
     {{-- Heatmap --}}
-    <div class="bg-border rounded-lg px-4 py-2">
-        <span class="text-heading-2 text-secondary-text text-left">
-            Últimas 12 semanas
-        </span>
-    </div>
+    <x-structure.section-title>
+        Últimas 12 semanas
+    </x-structure.section-title>
 
     <div class="bg-background-secondary border border-primary rounded-lg p-4 flex flex-col gap-3">
         <div

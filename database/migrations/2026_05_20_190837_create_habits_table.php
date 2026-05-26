@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\Habits\HabitTypeEnum;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->string('type');
+            $table->enum('type', HabitTypeEnum::cases());
             $table->unsignedInteger('current_streak')->default(0);
             $table->unsignedInteger('best_streak')->default(0);
             $table->timestamp('paused_at')->nullable();

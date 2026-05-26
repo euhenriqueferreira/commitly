@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(Habit::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Category::class)->constrained()->restrictOnDelete();
             $table->time('reminder_time')->nullable();
+            $table->date('ends_at')->nullable();
             $table->timestamp('valid_from');
             $table->timestamp('valid_until')->nullable();
             $table->timestamps();

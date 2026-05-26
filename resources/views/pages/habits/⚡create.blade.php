@@ -4,6 +4,8 @@ use Livewire\Component;
 use App\Services\Habits\CreateHabitService;
 use App\Models\Category;
 use App\Enum\Habits\WeekdayEnum;
+use Illuminate\Validation\Rule;
+
 
 new class extends Component
 {
@@ -11,6 +13,7 @@ new class extends Component
     public ?int $category = null;
     public array $weekdays = [];
     public ?string $reminderTime = null;
+    public ?string $endsAt = null;
 
     public function save(CreateHabitService $service): void {
         $validated = $this->validate([
@@ -18,7 +21,8 @@ new class extends Component
             'category' => ['required', 'exists:categories,id'],
             'weekdays' => ['required', 'array', 'min:1'],
             'weekdays.*' => ['integer', Rule::in(WeekdayEnum::values())],
-            'reminderTime' => ['nullable', 'date_format:H:i'],
+            'reminderTime' => ['nullable', 'date_format:H:i:s'],
+            'endsAt' => ['nullable', 'date', 'after_or_equal:today'],
         ]);
         
 
@@ -27,6 +31,7 @@ new class extends Component
             'category_id' => $validated['category'],
             'weekdays' => $validated['weekdays'],
             'reminder_time' => $validated['reminderTime'],
+            'ends_at' => $validated['endsAt'],
         ]);
 
         $this->redirectRoute('home');
@@ -56,11 +61,7 @@ new class extends Component
 ?>
 
 <div class="contents">
-    <header>
-        <h2 class="text-heading-1 text-primary-text text-left">
-            Novo hábito
-        </h2>
-    </header>
+    <x-structure.page-header title="Novo hábito" />
 
     <form class="space-y-3" wire:submit="save">
         <div class="bg-background-secondary border border-border rounded-lg p-4 space-y-2">
@@ -128,7 +129,8 @@ new class extends Component
         </div>
 
         <div class="bg-background-secondary border border-border rounded-lg p-4 space-y-2">
-            <x-form.input-time wireModel="reminderTime" label="Horário de lembrete" placeholder="ex: Meditar, treinar, ler..." />
+            <x-form.input-time wireModel="reminderTime" label="Horário de lembrete" />
+            <x-form.input-date wireModel="endsAt" label="Data limite" />
         </div>
 
         <x-actions.primary-button loading="save">Criar hábito</x-actions.primary-button>

@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateHabitService
 {
-    public function handle(Habit $habit, array $data): Habit {
+    public function handle(Habit $habit, array $data): Habit
+    {
         return DB::transaction(
             function () use ($habit, $data) {
                 $habit->currentVersion
@@ -15,12 +16,12 @@ class UpdateHabitService
                         'valid_until' => now(),
                     ]);
 
-
                 $version = $habit
                     ->versions()
                     ->create([
                         'category_id' => $data['category_id'],
                         'reminder_time' => $data['reminder_time'],
+                        'ends_at' => $data['ends_at'],
                         'valid_from' => now(),
                         'valid_until' => null,
                     ]);

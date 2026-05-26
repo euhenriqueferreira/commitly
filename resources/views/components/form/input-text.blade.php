@@ -29,6 +29,8 @@
             {{ $label }}
             @if ($isRequired)
                 <span class="text-danger">*</span>
+            @else
+                <span class="text-secondary-text">(?)</span>
             @endif
         </label>
     @endif

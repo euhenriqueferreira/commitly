@@ -16,7 +16,7 @@
 
     <div class="flex w-full gap-1.5">
         <input 
-            type="time" 
+            type="date" 
             id="{{ $wireModel }}" 
             @if($wireType === 'live') ? wire:model.live="{{ $wireModel }}" @else wire:model.defer="{{ $wireModel }}" @endif
             placeholder="{{ $placeholder }}" 

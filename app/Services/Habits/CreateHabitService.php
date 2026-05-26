@@ -23,6 +23,7 @@ class CreateHabitService
                 'habit_id' => $habit->id,
                 'category_id' => $data['category_id'],
                 'reminder_time' => $data['reminder_time'],
+                'ends_at' => $data['ends_at'],
                 'valid_from' => now(),
             ]);
 

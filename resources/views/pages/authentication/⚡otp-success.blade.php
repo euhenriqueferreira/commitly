@@ -16,7 +16,7 @@ new #[Layout('layouts::auth')] class extends Component
         $flow = session('auth_flow');
         session()->forget(['auth_flow']);
 
-        $this->buttonRoute = $flow === 'register' ? route('authentication.recovery-codes') : '';
+        $this->buttonRoute = $flow === 'register' ? route('authentication.recovery-codes') : route('home');
     }
 };
 ?>

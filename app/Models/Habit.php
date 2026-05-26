@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Enum\Habits\HabitTypeEnum;
+use Carbon\Carbon;
 use Illuminate\Console\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[Hidden([])]
 class Habit extends Model
 {
+    use HasFactory;
     use SoftDeletes;
 
     protected function casts(): array
@@ -43,5 +46,21 @@ class Habit extends Model
     public function currentVersion(): HasOne
     {
         return $this->hasOne(HabitVersion::class)->whereNull('valid_until');
+    }
+
+    public function versionForDate(Carbon $date): ?HabitVersion {
+        return $this->versions()
+            ->whereDate('valid_from', '<=', $date->toDateString())
+            ->where(
+                fn ($query) => $query
+                        ->whereNull('valid_until')
+                        ->orWhereDate('valid_until', '>=', $date->toDateString())
+            )
+            ->where(fn ($query) => 
+                    $query->whereNull('ends_at')
+                        ->orWhereDate('ends_at', '>=', $date->toDateString())
+            )
+            ->latest('valid_from')
+            ->first();
     }
 }

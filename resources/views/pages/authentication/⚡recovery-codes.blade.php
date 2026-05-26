@@ -16,7 +16,7 @@ new #[Layout('layouts::auth')] class extends Component
     public function continue(): void
     {
         session()->forget('recovery_codes');
-        // $this->redirectRoute('dashboard');
+        $this->redirectRoute('home');
     }
 };
 ?>

@@ -41,7 +41,7 @@ class OtpService
             ->where('email', $email)
             ->where('type', $type)
             ->whereNull('consumed_at')
-            ->latest()
+            ->latest('id')
             ->first();
 
         if (! $otp) {
