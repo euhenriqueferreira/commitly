@@ -70,16 +70,8 @@
 
 
     @keyframes fade-in {
-        /* 0%,
-        100% {
-            transform: translateX(0px);
-        }
-        50% {
-            transform: translateX(40px);
-        } */
-
         0%:   { opacity: '0'; transform: 'translateX(-4px)'; },
-        100%: { opacity: '1'; transform: 'translateX(0)'; },
+        100%: { opacity: '1'; transform: 'translateX(0)'; }
     }
 }
 
@@ -165,6 +157,10 @@
     line-height: 1.4;
     font-weight: 400;
     color: var(--color-primary-text)
+}
+
+@utility no-scrollbar {
+  @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
 }
 
 @theme {

@@ -6,6 +6,9 @@ use App\Models\Category;
 use App\Enum\Habits\WeekdayEnum;
 use Illuminate\Validation\Rule;
 use App\Services\Habits\UpdateHabitService;
+use App\Services\Habits\DeleteHabitService;
+use App\Services\Habits\EndHabitService;
+use App\Services\Habits\ResumeHabitService;
 
 new class extends Component
 {
@@ -59,7 +62,7 @@ new class extends Component
             'weekdays' => ['required', 'array', 'min:1'],
             'weekdays.*' => ['integer', Rule::in(WeekdayEnum::values())],
             'reminderTime' => ['nullable', 'date_format:H:i:s'],
-            'endsAt' => ['nullable', 'date', 'after_or_equal:today'],
+            'endsAt' => ['nullable', 'date'],
         ]);
 
         $service->handle(
@@ -76,11 +79,34 @@ new class extends Component
         $this->redirectRoute('habits.show', $this->habit);
     }
 
+    public function end(EndHabitService $service): void 
+    {
+        $service->handle($this->habit);
+        $this->redirectRoute('habits.show', $this->habit);
+    }
+
+    public function delete(DeleteHabitService $service): void 
+    {
+        $service->handle($this->habit);
+        $this->redirectRoute('habits.index');
+    }
+
+    public function resume(ResumeHabitService $service): void 
+    {
+        $service->handle($this->habit);
+        $this->redirectRoute('habits.show', $this->habit->fresh());
+    }
+
     public function categories()
     {
         return Category::query()
             ->orderBy('name')
             ->get();
+    }
+
+    public function getIsEndedProperty(): bool
+    {
+        return $this->habit->isEnded();
     }
 };
 ?>
@@ -93,6 +119,7 @@ new class extends Component
             <x-form.input-text wireModel="name" label="Nome do hábito" placeholder="ex: Meditar, treinar, ler..." isRequired />
         </div>
         
+        {{-- Category --}}
         <div class="bg-background-secondary border border-border rounded-lg p-4 space-y-2">
             <label class="block text-small text-left text-primary-text">
                 Categoria
@@ -128,6 +155,7 @@ new class extends Component
             @enderror
         </div>
 
+        {{-- Weekdays --}}
         <div class="bg-background-secondary border border-border rounded-lg p-4 space-y-2">
             <label class="block text-small text-left text-primary-text">
                 Dias da semana
@@ -153,11 +181,51 @@ new class extends Component
             @enderror
         </div>
 
+        {{-- Dates --}}
         <div class="bg-background-secondary border border-border rounded-lg p-4 space-y-2">
             <x-form.input-time wireModel="reminderTime" label="Horário de lembrete" />
             <x-form.input-date wireModel="endsAt" label="Data limite" />
         </div>
 
-        <x-actions.primary-button loading="save">Criar hábito</x-actions.primary-button>
+        {{-- Other actions --}}
+        <div class="bg-background-secondary border border-border rounded-lg p-4 space-y-2">
+            <label class="block text-small text-left text-primary-text">
+                Ações secundárias
+                <span class="text-danger">*</span>
+            </label>
+
+            <span class="block text-small text-left text-secondary-text">
+                Você pode pausar este hábito e retomá-lo no futuro.
+            </span>
+            <span class="block text-small text-left text-secondary-text">
+                Se preferir excluí-lo definitivamente, será necessário inativá-lo — e essa ação não poderá ser desfeita.
+            </span>
+
+            <div class="grid grid-cols-2 gap-2">
+                {{-- End --}}
+                @if (! $habit->deleted_at)
+                    @if (! $this->isEnded)
+                        <x-actions.secondary-button type="button" wire:click="end">
+                            Pausar hábito
+                        </x-actions.secondary-button>
+                    @else
+                        <x-actions.secondary-button type="button" wire:click="resume">
+                            Retomar hábito
+                        </x-actions.secondary-button>
+                    @endif
+                @endif
+
+                {{-- Delete --}}
+                @if (! $habit->deleted_at)
+                    <x-actions.danger-button  type="button" x-on:click="if (confirm('Tem certeza que deseja inativar este hábito?')) {$wire.delete()}">
+                        Inativar
+                    </x-actions.danger-button>
+                @endif
+            </div>
+        </div>
+
+
+
+        <x-actions.primary-button loading="save">Salvar</x-actions.primary-button>
     </form>
 </div>

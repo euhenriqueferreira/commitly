@@ -20,6 +20,7 @@ class HabitVersion extends Model
         return [
             'valid_from' => 'datetime',
             'valid_until' => 'datetime',
+            'ends_at' => 'date',
         ];
     }
 

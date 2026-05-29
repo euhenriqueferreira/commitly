@@ -57,5 +57,5 @@ new #[Layout('layouts::auth')] class extends Component
         </span>
     </div>
 
-    <x-actions.primary-button href="{{ $buttonRoute }}">Ir para o app</x-actions.primary-button>
+    <x-actions.primary-button href="{{ $buttonRoute }}" wire:navigate>Ir para o app</x-actions.primary-button>
 </div>

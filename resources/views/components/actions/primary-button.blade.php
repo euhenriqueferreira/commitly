@@ -24,7 +24,7 @@
         </div>
     @endif
     
-    <span class="text-small text-center text-white" @if($loading) wire:loading.remove wire:target="{{ $loading }}" @endif>
+    <span class="flex items-center justify-center gap-2 text-small text-center text-white" @if($loading) wire:loading.remove wire:target="{{ $loading }}" @endif>
         {{ $slot }}
     </span>
 </{{ $tag }}>

@@ -2,15 +2,15 @@
 
 namespace App\Services\Habits;
 
-use Carbon\Carbon;
 use App\Models\Habit;
-use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class GetHabitsForDateService
 {
-    public function handle(Carbon $date): Collection {
+    public function handle(Carbon $date): Collection
+    {
         $weekday = $date->dayOfWeek;
 
         $habits = Habit::query()
@@ -24,17 +24,19 @@ class GetHabitsForDateService
             ])
             ->get();
 
-            return $habits->map(function ($habit) use ($date) {
-                $version = $habit->versionForDate($date);
+        return $habits->map(function ($habit) use ($date) {
+            $version = $habit->versionForDate($date);
 
-                if (! $version || ! $version->category) return null;
-                $completion = $habit->completions->first(fn ($completion) => $completion->completion_date->isSameDay($date));
+            if (! $version || ! $version->category) {
+                return null;
+            }
+            $completion = $habit->completions->first(fn ($completion) => $completion->completion_date->isSameDay($date));
 
-                $habit->setRelation('resolved_version', $version);
-                $habit->setRelation('completion_for_date', $completion);
+            $habit->setRelation('resolved_version', $version);
+            $habit->setRelation('completion_for_date', $completion);
 
-                return $habit;
-            })
+            return $habit;
+        })
             ->filter()
             ->filter(function ($habit) use ($weekday) {
                 return $habit

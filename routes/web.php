@@ -36,9 +36,9 @@ Route::middleware('auth')->group(function () {
     Route::livewire('/calendar', 'pages::calendar')->name('calendar');
     Route::livewire('/learning-trails', 'pages::learning-trails.index')->name('learning-trails.index');
     Route::livewire('/profile', 'pages::user.show')->name('user.show');
-    
+
     Route::prefix('/habits')->group(function () {
-        Route::livewire('/habits', 'pages::habits.index')->name('habits.index');
+        Route::livewire('/', 'pages::habits.index')->name('habits.index');
         Route::livewire('/create', 'pages::habits.create')->name('habits.create');
         Route::livewire('/{habit}/show', 'pages::habits.show')->name('habits.show');
         Route::livewire('/{habit}/edit', 'pages::habits.edit')->name('habits.edit');

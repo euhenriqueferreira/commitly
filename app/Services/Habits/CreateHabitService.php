@@ -27,6 +27,10 @@ class CreateHabitService
                 'valid_from' => now(),
             ]);
 
+            $habit->update([
+                'current_version_id' => $version->id,
+            ]);
+
             foreach ($data['weekdays'] as $weekday) {
                 $version->weekdays()->create([
                     'weekday' => $weekday,

@@ -52,9 +52,9 @@ new #[Layout('layouts::auth')] class extends Component
 
     <form class="w-full space-y-3" wire:submit.prevent="register">
         <div class="space-y-1">
-            <x-form.input-text wireModel="email" label="E-mail" placeholder="seu@email.com" />
-            <x-form.input-text wireModel="name" label="Nome" placeholder="Seu nome" />
-            <x-form.input-text wireModel="username" wireType="live" label="Nome de usuário" placeholder="@seu-username" />
+            <x-form.input-text wireModel="email" label="E-mail" placeholder="seu@email.com" isRequired />
+            <x-form.input-text wireModel="name" label="Nome" placeholder="Seu nome" isRequired />
+            <x-form.input-text wireModel="username" wireType="live" label="Nome de usuário" placeholder="@seu-username" isRequired />
         </div>
 
         <div id="codeblock" class="bg-background-secondary border border-border rounded-md p-4 space-y-0.5">

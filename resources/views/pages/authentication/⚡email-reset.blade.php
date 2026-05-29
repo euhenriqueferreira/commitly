@@ -89,7 +89,7 @@ new #[Layout('layouts::auth')] class extends Component
 
     <form class="w-full space-y-3" wire:submit="resetEmail">
         <div class="space-y-1">
-            <x-form.input-text wireModel="newEmail" label="Novo e-mail" placeholder="seu@email.com" />
+            <x-form.input-text wireModel="newEmail" label="Novo e-mail" placeholder="seu@email.com" isRequired />
         </div>
 
         <x-actions.primary-button>Redefinir e enviar código</x-actions.primary-button>

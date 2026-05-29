@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[Fillable(['user_id', 'name', 'type', 'current_streak', 'best_streak', 'paused_at'])]
+#[Fillable(['user_id', 'name', 'type', 'current_version_id', 'current_streak', 'best_streak', 'paused_at'])]
 #[Hidden([])]
 class Habit extends Model
 {
@@ -43,24 +43,26 @@ class Habit extends Model
         return $this->hasMany(HabitCompletion::class);
     }
 
-    public function currentVersion(): HasOne
+    public function currentVersion(): BelongsTo
     {
-        return $this->hasOne(HabitVersion::class)->whereNull('valid_until');
+        return $this->belongsTo(HabitVersion::class, 'current_version_id');
     }
 
-    public function versionForDate(Carbon $date): ?HabitVersion {
+    public function versionForDate(Carbon $date): ?HabitVersion
+    {
         return $this->versions()
             ->whereDate('valid_from', '<=', $date->toDateString())
-            ->where(
-                fn ($query) => $query
-                        ->whereNull('valid_until')
-                        ->orWhereDate('valid_until', '>=', $date->toDateString())
-            )
-            ->where(fn ($query) => 
-                    $query->whereNull('ends_at')
-                        ->orWhereDate('ends_at', '>=', $date->toDateString())
-            )
+            ->where(function ($query) use ($date) {
+                $query
+                    ->whereNull('valid_until')
+                    ->orWhereDate('valid_until', '>=', $date);
+            })
             ->latest('valid_from')
             ->first();
+    }
+
+    public function isEnded(): bool
+    {
+        return $this->currentVersion->ends_at && $this->currentVersion->ends_at->isPast();
     }
 }

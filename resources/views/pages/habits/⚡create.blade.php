@@ -61,7 +61,7 @@ new class extends Component
 ?>
 
 <div class="contents">
-    <x-structure.page-header title="Novo hábito" />
+    <x-structure.page-header title="Novo hábito" back="{{ route('habits.index') }}" />
 
     <form class="space-y-3" wire:submit="save">
         <div class="bg-background-secondary border border-border rounded-lg p-4 space-y-2">

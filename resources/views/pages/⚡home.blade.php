@@ -61,7 +61,8 @@ new class extends Component
         </x-actions.nav-action>
     </x-structure.page-header>
 
-    <x-actions.primary-button href="{{ route('calendar') }}">
+    <x-actions.primary-button href="{{ route('calendar') }}" wire:navigate>
+        <x-icon icon="calendar" class="w-5 h-5 text-primary-text object-scale-down" />
         Acessar calendário
     </x-actions.primary-button>
 

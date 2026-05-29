@@ -185,7 +185,7 @@ new class extends Component
 ?>
 
 <div class="contents">
-    <x-structure.page-header title="Visualizar hábito" />
+    <x-structure.page-header title="Visualizar hábito" back="{{ route('habits.index') }}" />
 
 
     <div class="w-full px-2 py-1 rounded-lg text-center" style="background-color: {{ HabitTypeEnum::ATOMIC->color() }}">
@@ -193,6 +193,22 @@ new class extends Component
             {{ HabitTypeEnum::ATOMIC->label() }}
         </span>
     </div>
+
+    @if (! $habit->deleted_at && $habit->isEnded())
+        <div class="bg-alert/15 border border-alert px-4 py-2 rounded-lg text-center">
+            <span class="text-small text-alert">
+                Pausado
+            </span>   
+        </div>
+    @endif
+
+    @if ($habit->deleted_at)
+        <div class="bg-danger/15 border border-danger px-4 py-2 rounded-lg text-center">
+            <span class="text-small text-danger">
+                Inativado
+            </span>   
+        </div>
+    @endif
 
     {{-- Header --}}
     <div class="bg-background-secondary border border-primary rounded-lg p-4 flex flex-col gap-3">
@@ -228,6 +244,7 @@ new class extends Component
         </div>
     </div>
 
+
     {{-- Infos --}}
     <div class="bg-background-secondary border border-border rounded-lg p-4 flex flex-col gap-2">
         <div class="flex items-center gap-3">
@@ -261,7 +278,7 @@ new class extends Component
             </span>
         </div>
 
-        <x-actions.primary-button class="mt-1" href="{{ route('habits.edit', $habit) }}">
+        <x-actions.primary-button class="mt-1" href="{{ route('habits.edit', $habit) }}" wire:navigate>
             Editar
         </x-actions.primary-button>
     </div>
@@ -323,28 +340,26 @@ new class extends Component
         </div>
     </div>
     
- 
-
-    @if ($this->shouldBeCompletedToday() && ! $this->alreadyCompletedToday())
-        <div class="bg-secondary-backgorund border border-border px-4 py-2 rounded-lg text-center">
-            <span class="text-small text-primary-text">
-                Ainda não feito hoje
-            </span>
-        </div>
-        <x-actions.primary-button loading="markAsDone" wire:click="markAsDone">
-            Marcar como feito hoje
-        </x-actions.primary-button>
-    @elseif ($this->shouldBeCompletedToday() && $this->alreadyCompletedToday())
-       <div class="bg-success/30 border border-success px-4 py-2 rounded-lg text-center">
-            <span class="text-small text-primary-text">
-                Já feito hoje
-            </span>
-        </div>
-        <x-actions.outline-button loading="unmarkAsDone" wire:click="unmarkAsDone">
-            Não fiz ainda
-        </x-actions.outline-button>
+    @if(!$habit->isEnded())
+        @if ($this->shouldBeCompletedToday() && ! $this->alreadyCompletedToday())
+            <div class="bg-secondary-backgorund border border-border px-4 py-2 rounded-lg text-center">
+                <span class="text-small text-primary-text">
+                    Ainda não feito hoje
+                </span>
+            </div>
+            <x-actions.primary-button loading="markAsDone" wire:click="markAsDone">
+                Marcar como feito hoje
+            </x-actions.primary-button>
+        @elseif ($this->shouldBeCompletedToday() && $this->alreadyCompletedToday())
+        <div class="bg-success/30 border border-success px-4 py-2 rounded-lg text-center">
+                <span class="text-small text-primary-text">
+                    Já feito hoje
+                </span>
+            </div>
+            <x-actions.outline-button loading="unmarkAsDone" wire:click="unmarkAsDone">
+                Não fiz ainda
+            </x-actions.outline-button>
+        @endif
     @endif
-
-</div>
 
 </div>
