@@ -6,7 +6,8 @@ use App\Models\Habit;
 
 class EndHabitService
 {
-    public function handle(Habit $habit): void {
+    public function handle(Habit $habit): void
+    {
         $habit
             ->currentVersion
             ->update([

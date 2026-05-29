@@ -74,31 +74,55 @@ new class extends Component
 
     public function completionRate(): int
     {
-        $createdAt = $this->habit->created_at->startOfDay();
+        $start = $this->habit
+            ->created_at
+            ->copy()
+            ->startOfDay();
 
         $today = now()->startOfDay();
 
-        $days = collect();
+        $expected = 0;
+        $completed = 0;
 
-        while ($createdAt <= $today) {
-            $weekday = $createdAt->dayOfWeek;
+        while ($start <= $today) {
 
-            $shouldExecute = $this->habit->currentVersion->weekdays->contains(fn ($weekdayModel) => $weekdayModel->weekday->value === $weekday);
+            $version = $this->habit->versionForDate($start);
 
-            if ($shouldExecute) {
-                $days->push($createdAt->copy()->toDateString());
+            if (! $version) {
+                $start->addDay();
+                continue;
             }
 
-            $createdAt->addDay();
+            $weekday = $start->dayOfWeek;
+
+            $shouldExecute = $version
+                ->weekdays
+                ->contains(fn ($weekdayModel) => $weekdayModel->weekday->value === $weekday);
+
+            if (! $shouldExecute) {
+                $start->addDay();
+                continue;
+            }
+
+            $expected++;
+
+            $hasCompletion = $this->habit
+                ->completions()
+                ->whereDate('completion_date', $start->toDateString())
+                ->exists();
+
+            if ($hasCompletion) {
+                $completed++;
+            }
+
+            $start->addDay();
         }
 
-        if ($days->count() === 0) {
+        if ($expected === 0) {
             return 0;
         }
 
-        $completed = $this->habit->completions()->count();
-
-        return (int) round(($completed / $days->count()) * 100);
+        return min(100, (int) round(($completed / $expected) * 100));
     }
 
     public function monthlyCompletions(): array

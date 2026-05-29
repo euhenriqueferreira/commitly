@@ -6,7 +6,7 @@ use App\Models\Habit;
 
 class DeleteHabitService
 {
-    public function handle(Habit $habit): void 
+    public function handle(Habit $habit): void
     {
         $habit->delete('');
     }

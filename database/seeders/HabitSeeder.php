@@ -30,7 +30,7 @@ class HabitSeeder extends Seeder
                     'habit_id' => $habit->id,
                     'category_id' => Category::query()->inRandomOrder('')->first()?->id,
                 ]);
-                
+
                 $habit->update(['current_version_id' => $version->id]);
 
                 $weekdays = collect(WeekdayEnum::cases())->shuffle()->take(fake()->numberBetween(1, 7));

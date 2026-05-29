@@ -33,6 +33,8 @@ new class extends Component
 
     public function toggleHabit(int $habitId, GetHabitsForDateService $service): void 
     {
+        if ($this->selectedDate->isFuture()) return;
+
         $habit = $this->habits->firstWhere('id', $habitId);
 
         if (! $habit) return;
@@ -125,7 +127,6 @@ new class extends Component
 ?>
 
 <div class="contents">
-    {{-- <x-structure.page-header title="{{ str($currentMonth->translatedFormat('F'))->ucfirst() }}" /> --}}
     <x-structure.page-header title="{{ str($currentMonth->translatedFormat('F'))->ucfirst() }} de {{ $currentMonth->year }}">
         <x-actions.nav-action wire:click="previousMonth">
             <x-icon icon="arrow-left" class="w-5 h-5 text-secondary-text object-scale-down" />
@@ -220,23 +221,26 @@ new class extends Component
         @forelse ($habits as $habit)
             @php
                 $completed = $habit->completion_for_date !== null;
+                $isFuture = $selectedDate->isFuture();
             @endphp
+            
+            <button @if(!$isFuture) wire:click="toggleHabit({{ $habit->id }})" @endif class="bg-background-secondary border border-border rounded-lg p-4 flex items-start gap-3">
+                @if(!$isFuture)
+                    <div class="
+                        flex items-center justify-center w-6 h-6 rounded-full border 
+                        {{ $completed ? 'bg-success/15 border-success' : '' }}
+                        {{ ! $completed && $selectedDate->isPast() && ! $selectedDate->isToday() ? 'border-red-500 text-red-500' : '' }}
+                        {{ ! $completed && ! ($selectedDate->isPast() && ! $selectedDate->isToday()) ? 'bg-transparent border-border' : '' }}
+                    ">
+                        @if($completed)
+                            <x-icon icon="check" class="w-3 h-3 object-scale-down text-success" />
+                        @endif
 
-            <button wire:click="toggleHabit({{ $habit->id }})" class="bg-background-secondary border border-border rounded-lg p-4 flex items-start gap-3">
-                <div class="
-                    flex items-center justify-center w-6 h-6 rounded-full border 
-                    {{ $completed ? 'bg-success/15 border-success' : '' }}
-                    {{ ! $completed && $selectedDate->isPast() && ! $selectedDate->isToday() ? 'border-red-500 text-red-500' : '' }}
-                    {{ ! $completed && ! ($selectedDate->isPast() && ! $selectedDate->isToday()) ? 'bg-transparent border-border' : '' }}
-                ">
-                    @if($completed)
-                        <x-icon icon="check" class="w-3 h-3 object-scale-down text-success" />
-                    @endif
-
-                    @if(! $completed && $selectedDate->isPast() && ! $selectedDate->isToday())
-                        <x-icon icon="x-mark" class="w-3 h-3 object-scale-down text-danger" />
-                    @endif
-                </div>
+                        @if(! $completed && $selectedDate->isPast() && ! $selectedDate->isToday())
+                            <x-icon icon="x-mark" class="w-3 h-3 object-scale-down text-danger" />
+                        @endif
+                    </div>
+                @endif
 
                 <div class="flex-1 space-y-1">
                     <span class="block text-content text-left text-primary-text {{ $completed ? 'line-through' : '' }}">
