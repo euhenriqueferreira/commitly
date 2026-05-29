@@ -1,0 +1,35 @@
+<?php
+
+use App\Models\Category;
+use App\Models\Habit;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('habit_versions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Habit::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Category::class)->constrained()->restrictOnDelete();
+            $table->time('reminder_time')->nullable();
+            $table->date('ends_at')->nullable();
+            $table->timestamp('valid_from');
+            $table->timestamp('valid_until')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('habit_versions');
+    }
+};

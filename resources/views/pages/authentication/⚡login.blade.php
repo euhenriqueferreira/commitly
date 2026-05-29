@@ -7,7 +7,7 @@ use App\Services\Authentication\OtpService;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
-use App\Enum\Authentication\Otp\OtpVerificationType;
+use App\Enum\Authentication\Otp\OtpVerificationTypeEnum;
 
 new #[Layout('layouts::auth')] class extends Component
 {
@@ -49,12 +49,12 @@ sleep(2);
         $otpService->generate(
                 user: $user,
                 email: $user->email,
-                type: OtpVerificationType::LOGIN->value
+                type: OtpVerificationTypeEnum::LOGIN->value
             );
 
         session([
             'otp_user_id' => $user->id,
-            'otp_type' => OtpVerificationType::LOGIN->value,
+            'otp_type' => OtpVerificationTypeEnum::LOGIN->value,
             'auth_flow' => 'login',
         ]);
 
@@ -88,7 +88,7 @@ sleep(2);
 
     <form class="w-full space-y-3" wire:submit="submit">
         <div class="space-y-1">
-            <x-form.input-text wireModel="email" label="E-mail" placeholder="seu@email.com" autocomplete="email" />
+            <x-form.input-text wireModel="email" label="E-mail" placeholder="seu@email.com" autocomplete="email" isRequired />
             
             <div class="w-full text-right">
                 <a href="{{ route('authentication.recovery') }}" wire:navigate class="text-small text-secondary-text text-right">Perdeu acesso ao seu e-mail?</a>

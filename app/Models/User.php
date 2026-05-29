@@ -34,4 +34,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(RecoveryCode::class);
     }
+
+    public function habits(): HasMany
+    {
+        return $this->hasMany(Habit::class);
+    }
 }

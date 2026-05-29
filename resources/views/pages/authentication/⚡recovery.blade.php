@@ -94,8 +94,8 @@ new #[Layout('layouts::auth')] class extends Component
 
     <form class="w-full space-y-3" wire:submit="verify">
         <div class="space-y-1">
-            <x-form.input-text wireModel="email" label="E-mail" placeholder="seu@email.com" />
-            <x-form.input-text wireModel="recoveryCode" label="Código de recuperação" placeholder="XXXX-XXXX" />
+            <x-form.input-text wireModel="email" label="E-mail" placeholder="seu@email.com" isRequired />
+            <x-form.input-text wireModel="recoveryCode" label="Código de recuperação" placeholder="XXXX-XXXX" isRequired />
         </div>
 
         <x-actions.primary-button>Verificar código</x-actions.primary-button>

@@ -5,7 +5,7 @@ use Livewire\Attributes\Layout;
 use App\Services\Authentication\OtpService;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
-use App\Enum\Authentication\Otp\OtpVerificationType;
+use App\Enum\Authentication\Otp\OtpVerificationTypeEnum;
 
 new #[Layout('layouts::auth')] class extends Component
 {
@@ -48,14 +48,14 @@ new #[Layout('layouts::auth')] class extends Component
         $otpService->generate(
             user: $user,
             email: $user->email,
-            type: OtpVerificationType::RECOVERY->value
+            type: OtpVerificationTypeEnum::RECOVERY->value
         );
         
         session()->forget('recovery_authorized');
 
         session([
             'otp_user_id' => $user->id,
-            'otp_type' => OtpVerificationType::RECOVERY->value,
+            'otp_type' => OtpVerificationTypeEnum::RECOVERY->value,
             'auth_flow' => 'recovery',
         ]);
 
@@ -89,7 +89,7 @@ new #[Layout('layouts::auth')] class extends Component
 
     <form class="w-full space-y-3" wire:submit="resetEmail">
         <div class="space-y-1">
-            <x-form.input-text wireModel="newEmail" label="Novo e-mail" placeholder="seu@email.com" />
+            <x-form.input-text wireModel="newEmail" label="Novo e-mail" placeholder="seu@email.com" isRequired />
         </div>
 
         <x-actions.primary-button>Redefinir e enviar código</x-actions.primary-button>
